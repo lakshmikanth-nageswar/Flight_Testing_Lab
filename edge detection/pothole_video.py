@@ -14,7 +14,7 @@ cap = cv2.VideoCapture('tested.mp4')
 
 # Create a VideoWriter object to save the processed video
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output_video.avi', fourcc, 20.0, (640, 480))  # Adjust size accordingly
+out = cv2.VideoWriter('output_video.mp4', fourcc, 20.0, (640, 480))  # Adjust size accordingly
 
 while cap.isOpened():
     ret, frame = cap.read()
