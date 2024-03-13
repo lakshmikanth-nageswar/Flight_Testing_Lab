@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  #octomap REQUIRED
 )
 
 ## System dependencies are found with CMake's conventions
@@ -120,6 +121,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  #${OCTOMAP_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -151,7 +153,9 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+#target_link_libraries(${OCTOMAP_LIBRARIES})
 
+#link_directories(${OCTOMAP_LIBRARY_DIRS})
 #############
 ## Install ##
 #############
