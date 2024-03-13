@@ -6,7 +6,7 @@ def lidar_callback(msg):
     pub.publish(msg)
 
 if __name__ == '__main__':
-    rospy.init_node('lidar_to_rtabmap_node')
+    rospy.init_node('lidar_rtabmap')
     
     # Subscribe to the LiDAR topic
     rospy.Subscriber('/lidar_topic', point_cloud2, lidar_callback)
