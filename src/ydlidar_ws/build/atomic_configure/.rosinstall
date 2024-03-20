@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/lakshmikanth/catkin_ws/src/flight_testing_lab/src/ydlidar_ws/devel/setup.sh
