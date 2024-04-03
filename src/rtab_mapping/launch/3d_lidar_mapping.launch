@@ -60,13 +60,13 @@
   <arg name="rtabmap_viz"  default="false"/>
   <arg name="camera"       default="false"/>
   <arg name="lidar2d"      default="false"/>
-  <arg name="lidar3d"      default="false"/>
+  <arg name="lidar3d"      default="true"/> <!-- Check Again -->
   <arg name="lidar3d_ray_tracing" default="true"/>
-  <arg name="slam2d"       default="true"/>
-  <arg name="depth_from_lidar" default="false"/>
+  <arg name="slam2d"       default="false"/>
+  <arg name="depth_from_lidar" default="false"/> <!-- 3d lidar gives depth - so should this be made true? -->
 
 
-  <arg     if="$(arg lidar3d)" name="cell_size" default="0.3"/>
+  <arg     if="$(arg lidar3d)" name="cell_size" default="0.3"/> <!-- tune this later based on the computation time -->
   <arg unless="$(arg lidar3d)" name="cell_size" default="0.05"/>
 
   <arg if="$(eval not lidar2d and not lidar3d)" name="lidar_args" default=""/>
@@ -100,19 +100,21 @@
       --Icp/PointToPlaneNormalK 10
       --Icp/MaxTranslation 1"/>
 
+      <!-- Outlier Ration 0.85 - When Config file isn't set already -->
+
   <!--- Run rtabmap -->
-  <remap from="/rtabmap/grid_map" to="/map"/>
+  <remap from="/rtabmap/grid_map" to="/map"/> <!--- Metion other Remap parameters as well -->
   <include file="$(find rtabmap_launch)/launch/rtabmap.launch">
     <arg     if="$(arg localization)" name="args" value="--Reg/Force3DoF $(arg slam2d) $(arg lidar_args)" />
     <arg unless="$(arg localization)" name="args" value="--Reg/Force3DoF $(arg slam2d) $(arg lidar_args) -d" /> <!-- create new map -->
     <arg name="localization"    value="$(arg localization)" />
     <arg name="visual_odometry" value="false" />
     <arg name="approx_sync"     value="$(eval camera or not icp_odometry)" />
-    <arg name="imu_topic"       value="/imu/data" />
+    <arg name="imu_topic"       value="/imu/data" /> <!-- Check if sensor_msgs/Imu -->
     <arg unless="$(arg icp_odometry)" name="odom_topic" value="/odometry/filtered" />
     <arg name="frame_id"        value="base_link" />
     <arg name="rtabmap_viz"      value="$(arg rtabmap_viz)" />
-    <arg name="gps_topic"       value="/navsat/fix"/>
+    <arg name="gps_topic"       value="/navsat/fix"/> <!-- Check if sensor_msgs/NavSatFix -->
 
     <!-- 2D LiDAR -->
     <arg name="subscribe_scan"  value="$(arg lidar2d)" />
@@ -120,7 +122,7 @@
     <arg unless="$(arg lidar2d)" name="scan_topic"  value="/scan_not_used" />
 
     <!-- 3D LiDAR -->
-    <arg name="subscribe_scan_cloud"  value="$(arg lidar3d)" />
+    <arg name="subscribe_scan_cloud"  value="$(arg lidar3d)" /> <!-- Change the PCL subscribe topic to sensor_msgs/pointcloud_2 -->
     <arg     if="$(arg lidar3d)" name="scan_cloud_topic" value="/velodyne_points" />
     <arg unless="$(arg lidar3d)" name="scan_cloud_topic" value="/scan_cloud_not_used" />
 
